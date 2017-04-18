@@ -54,9 +54,73 @@
 		</div>
 	</div>
 	<h2 data-rno = "6">테스트라고!</h2>
+	
+	<ul class = "pagination">
+		
+	</ul>
 	<script>
 		var bno = 6155;
-		getAllReplies();
+		//getAllReplies();
+		getPageReplyList(1);
+		
+		var currentPage = 1;
+		$(".pagination").on("click","li a",function(){
+			event.preventDefault();
+			var replyPage = $(this).attr("href");
+			getPageReplyList(replyPage);
+		});
+		function getPageReplyList(page){
+			currentPage = page;
+			$.getJSON("replies/"+bno+"/"+page, function(data){
+				var str = "";
+				$(data.list).each(function(){
+					str += "<li data-rno='"+this.rno+"'class = 'replyLI'>"+this.rno+":"+this.replyText+"<button>변경</button>"+"</li>";
+				});
+				$("#replies").html(str);
+				printPaging(data.criteria);
+			});
+		}
+		
+		function printPaging(criteria){
+			var str = "";
+			
+			if(criteria.prev){
+				str += "<li><a href=''"+(criteria.startPage-1)+"'>'" + "<<"+"</a></li>";
+			}
+			for(var i = criteria.startPage; i<=criteria.endPage; i++){
+				var strClass = criteria.page == i?"class = 'active'":"";
+				str += "<li"+strClass+"><a href ='"+i+"'>"+i + "</a></li>";
+			}
+			if(criteria.next){
+				str += "<li><a href=''"+(criteria.endPage+1)+"'>'" + ">>"+"</a></li>";
+			}
+			$(".pagination").html(str);
+		}
+		
+		$("#replyModBtn").on("click",function(){
+			var rno = $(".model-title").html();
+			var replyText = $("#replyText").val();
+			
+			$.ajax({
+				type:"put",
+				url : "replies/"+rno,
+				headers : {
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "PUT"
+				},
+				dataType : "text",
+				data : JSON.stringify({
+					"replyText" : replyText
+				}),
+				success : function(result){
+					if(result == "SUCCESS"){
+						alert("수정되었습니다.");
+						$("#modDiv").hide("slow");
+						getPageReplyList(currentPage);
+					}
+				}
+			});
+		});
 		
 		$("#replyDelBtn").on("click",function(){
 			var ans = confirm("are you sure to delete?");
@@ -71,7 +135,7 @@
 						alert("삭제되었습니다.");
 					}
 					$("#modDiv").hide("slow");
-					getAllReplies();
+					getPageReplyList(currentPage);
 				}				
 			});
 		});
@@ -111,7 +175,7 @@
 					alert("HTTP STATUS :"+status);
 					alert("result : "+result);
 					if(result == "SUCCESS"){
-						getAllReplies();
+						getPageReplyList(1);
 					}
 				}
 			});

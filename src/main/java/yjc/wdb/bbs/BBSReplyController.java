@@ -66,6 +66,7 @@ public class BBSReplyController {
 		try{
 			reply.setRno(rno);
 			service.update(reply);
+			entity = new ResponseEntity<String>("SUCCESS",HttpStatus.OK);
 		}catch(Exception e){
 			e.printStackTrace();
 			entity = new ResponseEntity<String>(e.getMessage(),HttpStatus.BAD_REQUEST);
