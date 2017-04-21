@@ -177,7 +177,7 @@
 			}
 			for(var i = criteria.startPage; i<=criteria.endPage; i++){
 				var strClass = criteria.page == i?"class = 'active'":"";
-				str += "<li"+strClass+"><a href ='"+i+"'>"+i + "</a></li>";
+				str += "<li "+strClass+"><a href ='"+i+"'>"+i + "</a></li>";
 			}
 			if(criteria.next){
 				str += "<li><a href=''"+(criteria.endPage+1)+"'>'" + ">>"+"</a></li>";
