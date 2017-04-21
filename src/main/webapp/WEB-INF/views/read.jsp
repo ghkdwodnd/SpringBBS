@@ -9,6 +9,50 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src = "http://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <style>
+    .replyContainer{
+    	position : relative;
+    }
+	#modDiv {
+		width: 300px;
+		height : 100px;
+		background-color : lightgray;
+		position : absolute; 
+		top: 50%;
+		left: 50%;
+		margin-top : -50px;
+		margin-left : -150px;
+		padding: 10px;
+		z-index: 100;
+		box-shadow: 2px 2px 3px black;
+		display : none;
+	}
+	.reply{
+		display : inline-block;
+		float : left;'
+	}
+	.replyNum {
+		width : 3em;
+	}
+	.replyWriter, .date{
+		width : 10em;
+	}
+	.replyText{
+		width : 15em;
+		height : 3em;
+		overflow : auto;
+		margin-right : 10px;
+	}
+	.replyLI {
+		margin-bottom: 2em;
+		list-style-type: none;
+		clear : both;
+	}
+	.box-footer{
+		margin : 10px 0px;
+		
+	}
+</style>
   <script>
   	$(document).ready(function(){
   		var formObj = $("form[role='form']");
@@ -73,7 +117,7 @@
 			<input type = "text"  name = "replyText"  id = "newReplyText">
 		</div>
 		<div class = "box-footer">
-				<button id = "replyAddBtn">댓글 등록</button>
+				<button id = "replyAddBtn" class = "btn btn-primary">댓글 등록</button>
 		</div>
 	</div>
 	
@@ -96,7 +140,7 @@
 			</div>
 		</div>
 		<div>
-			<ul class = "pagination">
+			<ul class = "pagination pagination-sm no-margin">
 				
 			</ul>
 		</div>
@@ -118,7 +162,7 @@
 			$.getJSON("replies/"+bno+"/"+page, function(data){
 				var str = "";
 				$(data.list).each(function(){
-					str += "<li data-rno='"+this.rno+"'class = 'replyLI'>"+this.rno+":"+this.replyText+"<button>변경</button>"+"</li>";
+					str += "<li data-rno='"+this.rno+"'class = 'replyLI'>"+"<span class = 'reply replyNum'>"+this.rno+":</span>"+"<span class = 'reply replyText'>"+this.replyText+"</span>"+"&nbsp;&nbsp;<span class = 'reply replyWriter'>작성자 : "+this.replyer+"&nbsp;&nbsp;&nbsp;</span>"+"<span class = 'reply date'>수정일:"+this.updateDate+"</span>"+"<button class = 'btn btn-warning'>변경</button>"+"</li>";
 				});
 				$(".timeline").html(str);
 				printPaging(data.criteria);
@@ -176,10 +220,11 @@
 				url : "replies/"+rno,
 				success : function(result){
 					if(result == "SUCCESS"){
-						alert("삭제되었습니다.");
+// 						alert("삭제되었습니다.");
+						$("#modDiv").hide("slow");
+						getPageReplyList(currentPage);
 					}
-					$("#modDiv").hide("slow");
-					getPageReplyList(currentPage);
+					
 				}				
 			});
 		});
@@ -188,11 +233,12 @@
 			$("#modDiv").hide("slow");
 		});
 		
-		$("#replies").on("click",".replyLI button", function(){
+		$(".timeline").on("click",".replyLI button", function(){
 			var li = $(this).parent();
 			var rno = li.attr("data-rno");
-			var replyText = li.text();
-			alert(rno+":"+replyText);
+// 			var replyText = li.text();
+// 			alert(rno+":"+replyText);
+			var replyText = li.find(".replyText").text();
 			$(".model-title").html(rno);
 			$("#replyText").val(replyText);
 			$("#modDiv").show("slow");
@@ -201,7 +247,15 @@
 		$("#replyAddBtn").on("click",function(){
 			var replyer = $("#newReplier").val();
 			var replyText = $("#newReplyText").val();
+			if(replyer.trim() == ""){
+				alert("작성자 입력하세요");
+				return;
+			}
 			
+			if(replyText.trim() == ""){
+				alert("댓글을 입력하세요");
+				return;
+			}
 			$.ajax({
 				type : "post",
 				url : "replies",
@@ -225,16 +279,16 @@
 			});
 		});
 	
-		function getAllReplies(){
-			$.getJSON("replies/all/"+bno, function(data){
-				console.log(data);
-				var str = "";
-				$(data).each(function(){
-					str += "<li data-rno='"+this.rno+"'class = 'replyLI'>"+this.rno+":"+this.replyText+"<button>변경</button>"+"</li>";
-				});
-				$("#replies").html(str);
-			});
-		}
+// 		function getAllReplies(){
+// 			$.getJSON("replies/all/"+bno, function(data){
+// 				console.log(data);
+// 				var str = "";
+// 				$(data).each(function(){
+// 					str += "<li data-rno='"+this.rno+"'class = 'replyLI'>"+this.rno+":"+this.replyText+"<button>변경</button>"+"</li>";
+// 				});
+// 				$("#replies").html(str);
+// 			});
+// 		}
 	</script>
 </body>
 </html>
