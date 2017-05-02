@@ -70,7 +70,7 @@
   			formObj.submit();
   		});
   		
-  		$(".btn-primary").on("click",function(){
+  		$("#list").on("click",function(){
   			formObj.attr("action","listPage");
   			formObj.attr("method","get");
   			formObj.submit();
@@ -102,7 +102,7 @@
 	<div>
 		<button type = "submit" class = "btn btn-warning">Modify</button>
 		<button type = "submit" class = "btn btn-danger">Remove</button>
-		<button type = "submit" class = "btn btn-primary">List</button>
+		<button type = "submit" class = "btn btn-primary" id = "list">List</button>
 	</div>
 	
 	<div>
