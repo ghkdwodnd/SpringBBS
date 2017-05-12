@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import yjc.wdb.bbs.util.UploadFileUtils;
+
 @Controller
 public class FileUploadController {
 	private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
@@ -20,6 +22,7 @@ public class FileUploadController {
 //	@Inject
 	@Resource(name="uploadPath")
 	private String uploadPath;
+	
 	@RequestMapping(value="uploadForm",method = RequestMethod.GET)
 	public void uploadForm(){
 		logger.debug("uploadForm Requested");
@@ -35,23 +38,10 @@ public class FileUploadController {
 		logger.info("contentType : "+file.getContentType());
 		logger.info("server FileName : "+file.getName());
 
-		String savedName = uploadFile(file.getOriginalFilename() ,file.getBytes());
+		String savedName = UploadFileUtils.uploadFile(file.getOriginalFilename() ,uploadPath,file.getBytes());
 		model.addAttribute("savedName", savedName);
 		return "uploadResult";
 	}
-	private String uploadFile(String originalName, byte[] fileData) throws Exception{
-		UUID uid = UUID.randomUUID();
-		String savedName = "";
-		/*
-		 * originalName: rose.jpg
-		 * ==>
-		 * 
-		 * rose_apoejfowejof.jpg
-		 */
-		
-		return savedName;
-	}
-	
 	
 	
 }
