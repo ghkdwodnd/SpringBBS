@@ -7,6 +7,8 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,4 +44,18 @@ public class FileUploadController {
 		model.addAttribute("savedName", savedName);
 		return "uploadResult";
 	}	
+	
+	@RequestMapping(value="uploadAjax", method = RequestMethod.GET)
+	public void uploadAjax(){
+		
+	}
+	
+	@RequestMapping(value="uploadAjax",method = RequestMethod.POST,produces = "text/plain;charset=UTF-8")
+	public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception{
+		logger.info("originalName : "+file.getOriginalFilename());
+		logger.info("size:"+file.getSize());
+		logger.info("contentType"+file.getContentType());
+		
+		return new ResponseEntity<>(file.getOriginalFilename(),HttpStatus.CREATED);
+	}
 }
