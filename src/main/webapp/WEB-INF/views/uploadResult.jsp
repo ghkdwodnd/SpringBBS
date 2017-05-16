@@ -9,5 +9,9 @@
 </head>
 <body>
 	<h1>파일 업로드 성공!</h1>
+	<script>
+		var result = "${savedName}";
+		parent.addFilePath(result);
+	</script>
 </body>
 </html>

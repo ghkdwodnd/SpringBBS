@@ -41,7 +41,5 @@ public class FileUploadController {
 		String savedName = UploadFileUtils.uploadFile(file.getOriginalFilename() ,uploadPath,file.getBytes());
 		model.addAttribute("savedName", savedName);
 		return "uploadResult";
-	}
-	
-	
+	}	
 }

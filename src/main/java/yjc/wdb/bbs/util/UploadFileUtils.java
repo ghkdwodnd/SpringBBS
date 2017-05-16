@@ -34,12 +34,20 @@ public class UploadFileUtils {
 			thumbNailName = makeThumbNail(uploadPath,savedPath, savedName);
 		}
 		else{
-			thumbNailName = makeIcon();
+			thumbNailName = makeIcon(uploadPath,savedPath, savedName);
 		}
 		
 		
 		return thumbNailName;
 	}
+	
+	private static String makeIcon(String uploadPath, String path, String fileName) throws Exception{
+		String iconName = uploadPath + path +File.separator +fileName;
+		//resource/upload/2017/05/16/rose_fjweopi.jpg
+		// /2017/06/16/rose_fijojoew.jpg¹ÝÈ¯....
+		return iconName.substring(uploadPath.length()).replace(File.separatorChar, '/');
+	}
+	
 	private static String makeThumbNail(String uploadPath, String path, String fileName) throws Exception{
 		BufferedImage sourceImg = ImageIO.read(new File(uploadPath+path,fileName));
 		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT,100);
