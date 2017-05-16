@@ -22,7 +22,7 @@ public class UploadFileUtils {
 		String savedPath = calculatePath(uploadPath);
 		
 		File target = new File(uploadPath+savedPath, savedName);
-		
+		System.out.println(target.getAbsolutePath());
 		
 		FileCopyUtils.copy(fileData, target);
 	
