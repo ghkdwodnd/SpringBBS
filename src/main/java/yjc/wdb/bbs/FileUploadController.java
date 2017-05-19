@@ -1,5 +1,7 @@
 package yjc.wdb.bbs;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -7,14 +9,18 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import yjc.wdb.bbs.util.MediaUtils;
 import yjc.wdb.bbs.util.UploadFileUtils;
 
 @Controller
@@ -57,5 +63,37 @@ public class FileUploadController {
 		logger.info("contentType"+file.getContentType());
 		
 		return new ResponseEntity<>(file.getOriginalFilename(),HttpStatus.CREATED);
+	}
+	
+	@ResponseBody
+	@RequestMapping("displayFile")
+	public ResponseEntity<byte[]> displayFile(String fileName) throws Exception{
+		ResponseEntity<byte[]> entity = null;
+		
+		String ext = fileName.substring(fileName.lastIndexOf(".")+1);
+		
+		MediaType mediaType = MediaUtils.getMediaType(ext);
+		
+		InputStream in = null;
+		
+		logger.info("File Name: " + fileName);
+		
+		HttpHeaders headers = new HttpHeaders();
+		//uploadPath : resources/upload
+		//fileName : /2017/05/18/ThumbNail_rose_XXXXX.jpg
+		try{
+			in = new FileInputStream(uploadPath+fileName);
+			if(mediaType != null){
+				headers.setContentType(mediaType);
+			}else{
+				
+			}
+		}catch(Exception e){
+			
+		}finally{
+			in.close();
+		}
+		
+		return entity;
 	}
 }
