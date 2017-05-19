@@ -26,7 +26,7 @@
 	</beans:bean>
 	
 	<beans:bean id = "uploadPath" class = "java.lang.String">
-		<beans:constructor-arg value = "resources/upload"/>
+		<beans:constructor-arg value = "/resources/upload"/>
 	</beans:bean>
 	
 	<context:component-scan base-package="yjc.wdb.bbs" />

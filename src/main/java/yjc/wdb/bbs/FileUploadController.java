@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -86,10 +87,16 @@ public class FileUploadController {
 			if(mediaType != null){
 				headers.setContentType(mediaType);
 			}else{
-				
+				fileName = fileName.substring(fileName.indexOf("_")+1);
+				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+				String fN = new String(fileName.getBytes("UTF-8"),"ISO-8859-1");
+				headers.add("Content-Disposition", "attachment; filename=\""+fN+"\"");
 			}
+			byte[] data = IOUtils.toByteArray(in);
+			entity = new ResponseEntity<byte[]>(data, headers, HttpStatus.CREATED);
 		}catch(Exception e){
-			
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}finally{
 			in.close();
 		}
