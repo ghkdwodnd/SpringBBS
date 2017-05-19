@@ -57,7 +57,7 @@ public class UploadFileUtils {
 		
 		ImageIO.write(destImg, fileExtension.toLowerCase(), newFile);
 		thumbNailName = thumbNailName.substring(uploadPath.length());
-		thumbNailName.replace(File.separatorChar, '/');
+		thumbNailName = thumbNailName.replace(File.separatorChar, '/');
 		return thumbNailName;
 	}
 	

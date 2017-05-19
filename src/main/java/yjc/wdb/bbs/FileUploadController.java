@@ -63,7 +63,8 @@ public class FileUploadController {
 		logger.info("size:"+file.getSize());
 		logger.info("contentType"+file.getContentType());
 		
-		return new ResponseEntity<>(file.getOriginalFilename(),HttpStatus.CREATED);
+		String savedName = UploadFileUtils.uploadFile(file.getOriginalFilename() ,uploadPath,file.getBytes());
+		return new ResponseEntity<>(savedName,HttpStatus.CREATED);
 	}
 	
 	@ResponseBody

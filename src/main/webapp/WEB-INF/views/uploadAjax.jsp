@@ -44,10 +44,23 @@
 				contentType : false,
 				type : "POST",
 				success : function(data){
-					alert(data);	
+					var str = "";
+					alert(data);
+					if(checkImageType(data)){
+						str = "<div><img src ='"+ "displayFile?fileName="+data+"'/>" + data + "</div>";
+					}
+					else{
+						str = "<div>" + data + "</div>";
+					}
+					$(".uploadList").append(str);
 				}
 			});
 		});
+		
+		function checkImageType(fileName){
+			var pattern = /jpg|gif|jpeg|png/i;
+			return fileName.match(pattern);
+		}
 	</script>
 </body>
 </html>
