@@ -61,7 +61,7 @@ public class FileUploadController {
 	public ResponseEntity<String> uploadAjax(MultipartFile file) throws Exception{
 		logger.info("originalName : "+file.getOriginalFilename());
 		logger.info("size:"+file.getSize());
-		logger.info("contentType"+file.getContentType());
+		logger.info("contentType : "+file.getContentType());
 		
 		String savedName = UploadFileUtils.uploadFile(file.getOriginalFilename() ,uploadPath,file.getBytes());
 		return new ResponseEntity<>(savedName,HttpStatus.CREATED);
