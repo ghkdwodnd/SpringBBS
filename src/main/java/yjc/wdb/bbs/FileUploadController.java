@@ -1,5 +1,6 @@
 package yjc.wdb.bbs;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.*;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -102,6 +104,27 @@ public class FileUploadController {
 			in.close();
 		}
 		
+		return entity;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="deleteFile",method=RequestMethod.DELETE, produces = "text/plain;charset=UTF-8")
+	public ResponseEntity<String> deleteFile(@RequestBody String fileName){
+		logger.info("delete file:" + fileName);
+		String ext = fileName.substring(fileName.lastIndexOf("."));
+		
+		MediaType mType = MediaUtils.getMediaType(ext);
+		if(mType != null){
+			//원본 이미지를 삭제하기
+			String folderPath = fileName.substring(0, 12);
+			String orgName = fileName.substring(12+"thumbNail_".length());
+			File orgImgFile = new File(uploadPath+(folderPath+orgName));
+			orgImgFile.delete();
+		}
+		File orgFile = new File(uploadPath+fileName);
+		orgFile.delete();
+		
+		ResponseEntity<String> entity = new ResponseEntity<String>("deleted",HttpStatus.OK);
 		return entity;
 	}
 }
