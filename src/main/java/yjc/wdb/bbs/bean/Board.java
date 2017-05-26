@@ -11,6 +11,14 @@ public class Board {
 	private String writer;
 	private int viewcnt;
 	private Date regdate;
+	private String[] fileNames;
+	
+	public String[] getFileNames() {
+		return fileNames;
+	}
+	public void setFileNames(String[] fileNames) {
+		this.fileNames = fileNames;
+	}
 	public Date getRegdate() {
 		return regdate;
 	}

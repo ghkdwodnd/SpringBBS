@@ -3,6 +3,8 @@ package yjc.wdb.bbs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -106,25 +108,80 @@ public class FileUploadController {
 		
 		return entity;
 	}
+	 @ResponseBody
+     @RequestMapping(value="deleteFile",  method=RequestMethod.DELETE, produces = "text/plain;charset=UTF-8")
+     public ResponseEntity<String> deleteFile(@RequestBody MyFile myfile){
+        String fileName= myfile.getFileName();
+        try{
+           fileName = URLDecoder.decode(fileName,"UTF-8");
+        }catch (UnsupportedEncodingException e) {
+        // TODO: handle exception
+           e.printStackTrace();
+        }
+  
+        logger.info("delete file: " +fileName);
+        String ext = fileName.substring(fileName.lastIndexOf(".")+1);
+        
+     
+        MediaType mType = MediaUtils.getMediaType(ext);
+        if(mType != null){ //Image file
+           //원본 이미지를 삭제하기
+           String folderPath = fileName.substring(0, 12);
+           String orgName = fileName.substring(12+"thumbNail_".length());
+           File orgImgFile = new File(uploadPath+(folderPath+orgName).replace('/',File.separatorChar));
+           orgImgFile.delete();
+        }
+        //ThumNail이미지 삭제
+        File orgFile = new File(uploadPath+fileName);
+        orgFile.delete();
+        
+        ResponseEntity<String> entity = 
+              new ResponseEntity<String>("deleted",HttpStatus.OK);
+        
+        return entity;
+        
+     }
 	
-	@ResponseBody
-	@RequestMapping(value="deleteFile",method=RequestMethod.DELETE, produces = "text/plain;charset=UTF-8")
-	public ResponseEntity<String> deleteFile(@RequestBody String fileName){
-		logger.info("delete file:" + fileName);
-		String ext = fileName.substring(fileName.lastIndexOf("."));
-		
-		MediaType mType = MediaUtils.getMediaType(ext);
-		if(mType != null){
-			//원본 이미지를 삭제하기
-			String folderPath = fileName.substring(0, 12);
-			String orgName = fileName.substring(12+"thumbNail_".length());
-			File orgImgFile = new File(uploadPath+(folderPath+orgName));
-			orgImgFile.delete();
-		}
-		File orgFile = new File(uploadPath+fileName);
-		orgFile.delete();
-		
-		ResponseEntity<String> entity = new ResponseEntity<String>("deleted",HttpStatus.OK);
-		return entity;
+//	@ResponseBody
+//	@RequestMapping(value="deleteFile",method=RequestMethod.DELETE, produces = "text/plain;charset=UTF-8")
+//	public ResponseEntity<String> deleteFile(@RequestBody MyFile myfile){
+//		String fileName = myfile.getFileName();
+//		try {
+//			fileName = URLDecoder.decode(fileName, "UTF-8");
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		logger.info("delete file:" + fileName);
+//		String ext = fileName.substring(fileName.lastIndexOf("."));
+//		
+//		MediaType mType = MediaUtils.getMediaType(ext);
+//		if(mType != null){ //image file
+//			//원본 이미지를 삭제하기
+//			String folderPath = fileName.substring(0, 12);
+//			logger.info("folderPath:"+folderPath);
+//			String orgName = fileName.substring(12+"thumbNail_".length());
+//			File orgImgFile = new File(uploadPath+(folderPath+orgName).replace('/', File.separatorChar));
+//			logger.info("original Image:"+orgImgFile.getAbsolutePath());
+//			orgImgFile.delete();
+//		}
+//		File orgFile = new File((uploadPath+fileName).replace('/', File.separatorChar));
+//		orgFile.delete();
+//		
+//		ResponseEntity<String> entity = new ResponseEntity<String>("deleted",HttpStatus.OK);
+//		return entity;
+//	}
+}
+
+class MyFile{
+	private String fileName;
+
+	public String getFileName() {
+		return fileName;
 	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
 }

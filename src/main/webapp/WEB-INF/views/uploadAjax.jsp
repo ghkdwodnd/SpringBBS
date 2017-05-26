@@ -32,7 +32,7 @@
 					"X-HTTP-Method-Override":"DELETE"
 				},
 				dataType : "text",
-				data: {fileName:small.attr("data-src")},
+				data: JSON.stringify({fileName:small.attr("data-src")}) ,
 				success : function(result){
 					if(result == "deleted"){
 						alert("deleted!");

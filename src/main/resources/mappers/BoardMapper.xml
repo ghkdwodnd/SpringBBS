@@ -64,4 +64,8 @@
   	select count(*) from tbl_board
   	<include refid="search"></include>
   </select>
+  <insert id="addAttach">
+  	insert into tbl_attach(fileName, bno)
+  	values(#{fileName},#)
+  </insert>
 </mapper>
