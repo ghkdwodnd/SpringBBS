@@ -16,4 +16,5 @@ public interface BoardDAO {
 	public int getTotalCount() throws Exception;
 	public List<Board> listSearch(Criteria criteria)throws Exception;
 	public int getSearchTotalCount(Criteria criteria) throws Exception;
+	public void addAttach(String fileName) throws Exception;
 }

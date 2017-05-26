@@ -20,6 +20,12 @@ public class BoardServiceImple implements BoardService {
 	public void regist(Board b) throws Exception {
 		// TODO Auto-generated method stub
 		dao.create(b);
+		if(b.getFileNames()==null) return;
+		String[] files = b.getFileNames();
+		
+		for(String fileName : files){
+			dao.addAttach(fileName);
+		}
 	}
 
 	@Override
@@ -70,5 +76,6 @@ public class BoardServiceImple implements BoardService {
 		return dao.getSearchTotalCount(criteria);
 	}
 
+	
 
 }

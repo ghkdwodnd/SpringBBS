@@ -4,9 +4,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<script
-   src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<title>게시글 등록</title>
+<style type="text/css">
+	.fileDrop{
+		width : 80%;
+		height : 100px;
+		border : 1px dotted gray;
+		background-color : rgba(77,88,99,0.2);
+	}
+	.uploadList li{
+		list-style-type: none;
+		width : 80%;
+		height : 130px;
+		margin : 10px 0;
+		border : 1px dotted gray;
+		text-align : center;
+	}
+	.uploadList img, .btn{
+		margin-top : 10px;
+	}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src = "resources/js/fileAjaxUpload.js"></script>
 </head>
 <body>
 	<form method = "post" style="margin : 10% 10%">
@@ -18,8 +37,21 @@
 		작성자 :<input type = "text"  id = "writer" name = "writer"> 
 		제목 : <input type = "text" id = "title" name = "title">
 		내용 : <textarea id = " content" name = "content"></textarea>
-		<input type = "submit" value = "작성">
-		<button id = "list">list</button>
+		
+		<div>
+			<ul class = "uploadList">
+				
+			</ul>
+		</div>
+		<div>
+			<label>File Drop here!</label>
+			<div class = "fileDrop"></div>
+		</div>
+		
+		<div class = "btn">
+			<input type = "submit" value = "작성">
+			<button id = "list">list</button>
+		</div>
 	</form>
 	
 	<script type="text/javascript">

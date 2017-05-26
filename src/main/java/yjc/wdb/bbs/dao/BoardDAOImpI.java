@@ -72,4 +72,10 @@ public class BoardDAOImpI implements BoardDAO {
 		return sqlSession.selectOne(namespace+".searchTotalCount",criteria);
 	}
 
+	@Override
+	public void addAttach(String fileName) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(namespace+".addAttach",fileName);
+	}
+
 }

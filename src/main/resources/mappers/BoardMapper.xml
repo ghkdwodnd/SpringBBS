@@ -66,6 +66,6 @@
   </select>
   <insert id="addAttach">
   	insert into tbl_attach(fileName, bno)
-  	values(#{fileName},#)
+  	values(#{fileName},last_insert_id())
   </insert>
 </mapper>
