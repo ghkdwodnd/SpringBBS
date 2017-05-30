@@ -1,6 +1,7 @@
 /**
  * 
  */
+function init(){
 		$(".uploadList").on("click","small",function(){
 			var small = $(this);
 			$.ajax({
@@ -46,24 +47,24 @@
 					var str = "";
 					alert(data);
 					if(checkImageType(data)){
-						str = "<div>"+"<a href='displayFile?fileName="+getOriginalName(data)+"'>"+"<img src ='"+ "displayFile?fileName="+data+"'/>" +"</a>" +"<small data-src='"+data+"'><a href = '#'>X</a></small></div>";
+						str = "<li>"+"<a href='displayFile?fileName="+getOriginalName(data)+"'>"+"<img src ='"+ "displayFile?fileName="+data+"'/>" +"</a>" +"<small data-src='"+data+"'><a href = '#'>X</a></small></li>";
 					}
 					else{
-						str = "<div><a href='displayFile?fileName="+data+"'>" + data + "</a><small data-src='"+data+"'><a href = '#'>X</a></small></div>";
+						str = "<li><a href='displayFile?fileName="+data+"'>" + data + "</a><small data-src='"+data+"'><a href = '#'>X</a></small></li>";
 					}
 					$(".uploadList").append(str);
 				}
 			});
 		});
+}		
+function checkImageType(fileName){
+		var pattern = /jpg|gif|jpeg|png/i;
+		return fileName.match(pattern);
+}
 		
-		function checkImageType(fileName){
-			var pattern = /jpg|gif|jpeg|png/i;
-			return fileName.match(pattern);
-		}
-		
-		function getOriginalName(name){
-			if(checkImageType(name) == false) return;
-			var folderPath = name.substr(0,12); // /2017/05/24/추출
-			var orgName = name.substr(12+"thumbNail_".length);
-			return folderPath + orgName;
-		}
+function getOriginalName(name){
+		if(checkImageType(name) == false) return;
+		var folderPath = name.substr(0,12); // /2017/05/24/추출
+		var orgName = name.substr(12+"thumbNail_".length);
+		return folderPath + orgName;
+}

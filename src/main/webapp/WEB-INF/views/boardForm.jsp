@@ -25,10 +25,13 @@
 	}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src = "resources/js/fileAjaxUpload.js"></script>
+<script src = "resources/js/fileAjaxUpload.js?ver=1"></script>
+<script>
+	$(document).ready(init);
+</script>
 </head>
 <body>
-	<form method = "post" style="margin : 10% 10%">
+	<form method = "post" id = "register" style="margin : 10% 10%">
 		<input type = "hidden" name = "page" value = "${criteria.page }">
    		<input type = "hidden" name = "recordsPerPage" value = "${criteria.recordsPerPage }">
    		<input type = "hidden" name = "searchType" value = "${criteria.searchType }">
@@ -67,6 +70,18 @@
 	 				$("form").attr("method","get");
 	 				$("form").submit();
  				});
+		});
+		
+		$("#register").submit(function(){
+			event.preventDefault();
+			var form = $(this);
+			var str = "";
+			$(".uploadList small").each(function(index){
+				str += "<input type 'hidden' name =  'fileNames["+index+"]' value = '"+
+				$(this).attr("data-src")+"'>"; 
+			});
+			form.append(str);
+			form.get(0).submit();
 		});
 		
 	</script>
