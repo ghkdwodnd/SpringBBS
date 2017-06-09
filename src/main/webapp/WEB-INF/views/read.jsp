@@ -52,6 +52,30 @@
 		margin : 10px 0px;
 		
 	}
+	.popup {
+		position : absolute;
+		
+	}
+	.back{
+		background-color : gray;
+		opacity : 0.5;
+		width : 100%;
+		height : 100%;
+		overflow : hidden;
+		z-index : 1101;
+	}
+	.front{
+		z-index : 1110;
+		opacity : 1;
+		border : 1px;
+		margin : auto;
+	}
+	.show{
+		positive : relative;
+		max-width : 1200px;
+		max-height : 800px;
+		overflow : auto;
+	}
 </style>
   <script>
   	$(document).ready(function(){
@@ -99,6 +123,15 @@
 		<label>writer:</label>
 		<input type = "text" id = "writer" name = "writer" class = "form-control" value = "${board.writer }">
 	</div>
+	<div>
+		<ul class = "uploadList">
+		</ul>
+	</div>
+	<div class = "popup back" style = "display:none"></div>
+	<div id = "popup_front" class = "popup front" style = "display:none">
+		<img id = "popup_img">
+	</div>
+	
 	<div>
 		<button type = "submit" class = "btn btn-warning">Modify</button>
 		<button type = "submit" class = "btn btn-danger">Remove</button>
@@ -148,6 +181,26 @@
 	
 	<script>
 		var bno = ${board.bno};
+		
+		
+		$(".uploadList").on("click","li a",function(event){
+			var fileLink = $(this).attr("href");
+			if(checkImageType(fileLink)){
+				event.preventDefault();
+				var imgTag = $("#popup_img");
+				imgTag.attr("src",fileLink);
+				$(".popup").show("slow");
+				imgTag.addClass("show"); 
+				
+			}
+		});
+		
+		$("#popup_img").on("click",function(){
+			$(".popup").hide("slow");
+		});
+		$.getJSON("getAttach/"+bno,function(list){
+			
+		});
 		//getAllReplies();
 		getPageReplyList(1);
 		
