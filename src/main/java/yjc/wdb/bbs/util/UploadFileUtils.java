@@ -13,10 +13,9 @@ import org.springframework.util.FileCopyUtils;
 
 public class UploadFileUtils {
 	public static String uploadFile(String originalName, String uploadPath, byte[] fileData) throws Exception{
-		UUID uid = UUID.randomUUID();
 		int extIdx = originalName.lastIndexOf(".");
 		String nameWithoutExtension = originalName.substring(0,extIdx);
-		String savedName = nameWithoutExtension + "_"+uid.toString();
+		String savedName = nameWithoutExtension;
 		savedName += originalName.substring(extIdx);
 		
 		String savedPath = calculatePath(uploadPath);
